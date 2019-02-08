@@ -37,12 +37,7 @@ contract HealthRecordFactory{
 
     function getProviderLength() public constant returns(uint) {
         return providers.length;
-    }
-
-    function getProvider(uint index) public constant returns(string,string,address) {
-        return (providers[index].name,providers[index].location,providers[index].provider);
-    }
-    
+    }    
     
     function addPatientToProvider(uint index, address _patient) public {
         Provider storage provider = providers[index];
@@ -90,9 +85,9 @@ contract HealthRecord{
     }
     
     
-    Condition[] conditions;
-    Medication[] medications;
-    Appointment[] appointments;
+    Condition[] public conditions;
+    Medication[] public medications;
+    Appointment[] public appointments;
     
     
     function HealthRecord(address creator, address _factory) public{
@@ -175,30 +170,15 @@ contract HealthRecord{
     }
     
     
-    function getConditionsLength() public constant returns(uint) {
+    function getConditionLength() public constant returns(uint) {
         return conditions.length;
-    }
-
-    function getConditions(uint index) public constant returns(string,string,string,string,string,address) {
-        return (conditions[index].name, conditions[index].status, conditions[index].start_date, conditions[index].end_date,
-            conditions[index].how_it_ended, conditions[index].provider);
-    }
+    }    
     
-    
-    function getMedicationsLength() public constant returns(uint) {
+    function getMedicationLength() public constant returns(uint) {
         return medications.length;
     }
-
-    function getMedications(uint index) public constant returns(string,uint,string,string,string,address) {
-        return (medications[index].name,medications[index].strength,medications[index].reason,medications[index].start_date, medications[index].end_date,medications[index].provider);
-    }
-    
     function getAppointmentLength() public constant returns(uint) {
         return appointments.length;
-    }
-
-    function getAppointment(uint index) public constant returns(address,string,string) {
-        return (appointments[index].provider,appointments[index].date,appointments[index].purpose);
     }
     
     

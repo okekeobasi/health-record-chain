@@ -41,7 +41,7 @@ beforeEach(async () => {
         gas: "3000000"
     });
 
-    provider = await factory.methods.getProvider(0).call();
+    provider = await factory.methods.providers(0).call();
 
     //get address of deployed record
     [recordAddress] = await factory.methods.getDeployedRecords().call();
@@ -57,5 +57,56 @@ describe("Health Records", () => {
     it("depoys a factory and creates a provider", () => {
         assert.ok(factory.options.address);
         assert.ok(provider);
+    });
+
+    it("deploys a record", () => {
+        assert.ok(record.options.address);
+    });
+
+    it("allows a patient to create conditions", async () => {
+        await record.methods
+            .createCondition(
+                "Asthma",
+                "present",
+                "06/05/13",
+                "",
+                "",
+                accounts[0]
+            )
+            .send({
+                from: accounts[1],
+                gas: "3000000"
+            });
+
+        const condition = await record.methods.conditions(0).call();
+
+        assert.equal("Asthma", condition.name);
+    });
+
+    it("allows a patient to create appointments", async () => {
+        await record.methods
+            .createAppointment(accounts[0], "8/02/19", "checkup")
+            .send({
+                from: accounts[1],
+                gas: "3000000"
+            });
+
+        const appointment = await record.methods.appointments(0).call();
+
+        assert.equal("checkup", appointment.purpose);
+    });
+
+    it("only allows patient/owner to create appointments", async () => {
+        try {
+            await record.methods
+                .createAppointment(accounts[0], "8/02/19", "checkup")
+                .send({
+                    from: accounts[0],
+                    gas: "3000000"
+                });
+            assert(false);
+        } catch (err) {
+            assert(err);
+        }
     });
 });
