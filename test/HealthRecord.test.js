@@ -109,4 +109,17 @@ describe("Health Records", () => {
             assert(err);
         }
     });
+
+    it("adds the current owner to a provider struct", async () => {
+        await record.methods.addPatientToProviderFactory(0).send({
+            from: accounts[1],
+            gas: "3000000"
+        });
+
+        const patientInProvider = factory.methods
+            .getPatientOfProvider(0, accounts[1])
+            .call();
+
+        assert.ok(patientInProvider);
+    });
 });
