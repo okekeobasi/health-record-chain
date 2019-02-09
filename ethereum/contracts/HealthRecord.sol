@@ -100,7 +100,7 @@ contract HealthRecord{
         _;
     }
     
-    function addPatientToProviderFactory(uint index) public {
+    function addPatientToProviderFactory(uint index) restricted public {
         HealthRecordFactory newFactory = HealthRecordFactory(factory);
         newFactory.addPatientToProvider(index, owner);
     }
@@ -170,15 +170,30 @@ contract HealthRecord{
     }
     
     
-    function getConditionLength() public constant returns(uint) {
+    function getConditionsLength() public constant restricted returns(uint) {
         return conditions.length;
-    }    
+    }
+
+    function getConditions(uint index) public constant restricted returns(string,string,string,string,string,address) {
+        return (conditions[index].name, conditions[index].status, conditions[index].start_date, conditions[index].end_date,
+            conditions[index].how_it_ended, conditions[index].provider);
+    }
     
-    function getMedicationLength() public constant returns(uint) {
+    
+    function getMedicationsLength() public constant restricted returns(uint) {
         return medications.length;
     }
-    function getAppointmentLength() public constant returns(uint) {
+
+    function getMedications(uint index) public constant restricted returns(string,uint,string,string,string,address) {
+        return (medications[index].name,medications[index].strength,medications[index].reason,medications[index].start_date, medications[index].end_date,medications[index].provider);
+    }
+    
+    function getAppointmentLength() public constant restricted returns(uint) {
         return appointments.length;
+    }
+
+    function getAppointment(uint index) public constant restricted returns(address,string,string) {
+        return (appointments[index].provider,appointments[index].date,appointments[index].purpose);
     }
     
     

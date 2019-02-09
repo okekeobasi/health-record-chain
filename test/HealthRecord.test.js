@@ -7,6 +7,8 @@ const web3 = new Web3(ganache.provider());
 const compiledFactory = require("../ethereum/build/HealthRecordFactory.json");
 const compiledRecord = require("../ethereum/build/HealthRecord.json");
 
+const gas = "6000000";
+
 let accounts;
 let factory;
 let provider;
@@ -25,20 +27,20 @@ beforeEach(async () => {
         })
         .send({
             from: accounts[0],
-            gas: "3000000"
+            gas
         });
     factory.setProvider(web3.currentProvider);
 
     //create a provider in the factory contract
     await factory.methods.HealthProvider("Vedic", "Lekki, Lagos").send({
         from: accounts[0],
-        gas: "3000000"
+        gas
     });
 
     //Deploy a Record
     await factory.methods.createHealthRecord().send({
         from: accounts[1],
-        gas: "3000000"
+        gas
     });
 
     provider = await factory.methods.providers(0).call();
@@ -54,7 +56,7 @@ beforeEach(async () => {
 });
 
 describe("Health Records", () => {
-    it("depoys a factory and creates a provider", () => {
+    it("deploys a factory and creates a provider", () => {
         assert.ok(factory.options.address);
         assert.ok(provider);
     });
@@ -75,7 +77,7 @@ describe("Health Records", () => {
             )
             .send({
                 from: accounts[1],
-                gas: "3000000"
+                gas
             });
 
         const condition = await record.methods.conditions(0).call();
@@ -88,7 +90,7 @@ describe("Health Records", () => {
             .createAppointment(accounts[0], "8/02/19", "checkup")
             .send({
                 from: accounts[1],
-                gas: "3000000"
+                gas
             });
 
         const appointment = await record.methods.appointments(0).call();
@@ -102,8 +104,30 @@ describe("Health Records", () => {
                 .createAppointment(accounts[0], "8/02/19", "checkup")
                 .send({
                     from: accounts[0],
-                    gas: "3000000"
+                    gas
                 });
+            assert(false);
+        } catch (err) {
+            assert(err);
+        }
+    });
+
+    it("only allows owner to view appointments", async () => {
+        try {
+            //create the appointment
+            await record.methods
+                .createAppointment(accounts[0], "8/02/19", "checkup")
+                .send({
+                    from: accounts[1],
+                    gas
+                });
+
+            //call from a non-owner
+            const appointment = await record.methods.getAppointment(0).call({
+                from: accounts[0],
+                gas
+            });
+
             assert(false);
         } catch (err) {
             assert(err);
@@ -113,7 +137,7 @@ describe("Health Records", () => {
     it("adds the current owner to a provider struct", async () => {
         await record.methods.addPatientToProviderFactory(0).send({
             from: accounts[1],
-            gas: "3000000"
+            gas
         });
 
         const patientInProvider = factory.methods
