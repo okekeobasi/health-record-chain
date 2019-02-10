@@ -2,6 +2,7 @@ pragma solidity ^0.4.17;
 
 contract HealthRecordFactory{
     address[] public deployedHealthRecords;
+    mapping(address => bool) hasDeployedRecord;
     
     struct Provider{
         string name;
@@ -14,9 +15,13 @@ contract HealthRecordFactory{
     mapping(address => bool) providers_map;
     
     
-    function createHealthRecord() public {
-        address newHealthRecord = new HealthRecord(msg.sender, address(this));
+    function createHealthRecord(string name) public {
+        require(!hasDeployedRecord[msg.sender]);
+
+        address newHealthRecord = new HealthRecord(name, msg.sender, address(this));
         deployedHealthRecords.push(newHealthRecord);
+        
+        hasDeployedRecord[msg.sender] = true;
     }
 
     function getDeployedRecords() public view returns(address[]) {
@@ -55,6 +60,7 @@ contract HealthRecordFactory{
 
 
 contract HealthRecord{
+    string public username;
     address public owner;
     address public factory;
     
@@ -90,7 +96,8 @@ contract HealthRecord{
     Appointment[] public appointments;
     
     
-    function HealthRecord(address creator, address _factory) public{
+    function HealthRecord(string _username, address creator, address _factory) public{
+        username = _username;
         owner = creator;
         factory = _factory;
     }

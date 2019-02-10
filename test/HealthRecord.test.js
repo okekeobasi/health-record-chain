@@ -38,7 +38,7 @@ beforeEach(async () => {
     });
 
     //Deploy a Record
-    await factory.methods.createHealthRecord().send({
+    await factory.methods.createHealthRecord("Christopher").send({
         from: accounts[1],
         gas
     });
@@ -61,8 +61,11 @@ describe("Health Records", () => {
         assert.ok(provider);
     });
 
-    it("deploys a record", () => {
+    it("deploys a record", async () => {
         assert.ok(record.options.address);
+
+        username = await record.methods.username().call();
+        assert.equal(username, "Christopher");
     });
 
     it("allows a patient to create conditions", async () => {
@@ -145,5 +148,17 @@ describe("Health Records", () => {
             .call();
 
         assert.ok(patientInProvider);
+    });
+
+    it("allows an account to create only one record", async () => {
+        try {
+            await factory.methods.createHealthRecord("Christopher").send({
+                from: accounts[1],
+                gas
+            });
+            assert(false);
+        } catch (err) {
+            assert(err);
+        }
     });
 });
