@@ -71,6 +71,7 @@ contract HealthRecord{
         string end_date;
         string how_it_ended;
         address provider;
+        mapping(address => bool) approved;
     }
     
     struct Medication{
@@ -82,12 +83,14 @@ contract HealthRecord{
         string start_date;
         string end_date;
         address provider;
+        mapping(address => bool) approved;
     }
     
     struct Appointment{
         address provider;
         string date;
         string purpose;
+        mapping(address => bool) approved;
     }
     
     
@@ -203,5 +206,18 @@ contract HealthRecord{
         return (appointments[index].provider,appointments[index].date,appointments[index].purpose);
     }
     
+    function approveCondition(uint index) public {
+        address _provider = conditions[index].provider;
+        require(msg.sender == _provider);
+        
+        conditions[index].approved[_provider] = true;
+    }
+    
+    function approveAppointment(uint index) public {
+        address _provider = appointments[index].provider;
+        require(msg.sender == _provider);
+        
+        appointments[index].approved[_provider] = true;
+    }
     
 }

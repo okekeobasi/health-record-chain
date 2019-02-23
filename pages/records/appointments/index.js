@@ -102,15 +102,21 @@ class AppointmentIndex extends Component {
 
                             <Grid.Row>
                                 <Grid.Column>
-                                    <a>
-                                        <Button
-                                            primary
-                                            floated="right"
-                                            style={{ marginBottom: 10 }}
-                                        >
-                                            Add
-                                        </Button>
-                                    </a>
+                                    <Link
+                                        route={`/records/${
+                                            this.props.address
+                                        }/appointments/new`}
+                                    >
+                                        <a>
+                                            <Button
+                                                primary
+                                                floated="right"
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                Add
+                                            </Button>
+                                        </a>
+                                    </Link>
                                     <Table>
                                         <Header>
                                             <Row>
