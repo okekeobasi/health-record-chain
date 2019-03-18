@@ -101,10 +101,10 @@ contract HealthRecord{
      *Personal Information
     */
     
-    bytes32[] past_address;
-    bytes32[] next_of_kin_name;
-    bytes32[] next_of_kin_number;
-    bytes32 date_of_birth;
+    bytes32[] public past_address;
+    bytes32[] public next_of_kin_name;
+    bytes32[] public next_of_kin_number;
+    bytes32 public date_of_birth;
     
     
     function add_date_of_birth(bytes32 dob) public restricted {
