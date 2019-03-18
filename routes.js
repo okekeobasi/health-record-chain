@@ -12,6 +12,11 @@ routes
     .add("/records/:address/medications/new", "/records/medications/new");
 
 //Provider Routes
-routes.add("/provider/new", "/provider/new");
+routes
+    .add("/provider/new", "/provider/new")
+    .add(
+        "/provider/records/:address/appointments",
+        "/provider/records/appointments"
+    );
 
 module.exports = routes;

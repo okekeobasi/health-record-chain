@@ -28,7 +28,11 @@ class RecordIndex extends Component {
                             <a>View Record</a>
                         </Link>
 
-                        <a style={{ float: "right" }}>Provider</a>
+                        <Link
+                            route={`/provider/records/${address}/appointments`}
+                        >
+                            <a style={{ float: "right" }}>Provider</a>
+                        </Link>
                     </div>
                 ),
                 fluid: true,
