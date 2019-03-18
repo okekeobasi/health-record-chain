@@ -7,7 +7,8 @@ import { Router } from "../../routes";
 
 class RecordNew extends Component {
     state = {
-        fullname: "",
+        provider_name: "",
+        location: "",
         errorMessage: "",
         loading: false
     };
@@ -20,7 +21,10 @@ class RecordNew extends Component {
         try {
             const accounts = await web3.eth.getAccounts();
             await factory.methods
-                .createHealthRecord(web3.utils.fromAscii(this.state.fullname))
+                .HealthProvider(
+                    web3.utils.fromAscii(this.state.provider_name),
+                    web3.utils.fromAscii(this.state.location)
+                )
                 .send({
                     from: accounts[0]
                 });
@@ -36,18 +40,30 @@ class RecordNew extends Component {
     render() {
         return (
             <Layout>
-                <h3>Create Your Personal Health Chain</h3>
+                <h3>Register your Healthcare Provider</h3>
 
                 <Form
                     onSubmit={this.onSubmit}
                     error={!!this.state.errorMessage}
                 >
                     <Form.Field>
-                        <label>Full Name</label>
+                        <label>Provider Name</label>
                         <Input
-                            value={this.state.fullname}
+                            value={this.state.provider_name}
                             onChange={event => {
-                                this.setState({ fullname: event.target.value });
+                                this.setState({
+                                    provider_name: event.target.value
+                                });
+                            }}
+                        />
+                    </Form.Field>
+
+                    <Form.Field>
+                        <label>Location</label>
+                        <Input
+                            value={this.state.location}
+                            onChange={event => {
+                                this.setState({ location: event.target.value });
                             }}
                         />
                     </Form.Field>
@@ -59,7 +75,7 @@ class RecordNew extends Component {
                     />
 
                     <Button loading={this.state.loading} primary>
-                        Create {this.state.fullname}!
+                        Create {this.state.provider_name}!
                     </Button>
                 </Form>
             </Layout>

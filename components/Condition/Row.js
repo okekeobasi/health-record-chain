@@ -10,12 +10,17 @@ class ConditionRow extends Component {
         return (
             <Row>
                 <Cell>{id}</Cell>
-                <Cell>{condition[0]}</Cell>
-                <Cell>{condition[1]}</Cell>
-                <Cell>{condition[2]}</Cell>
-                <Cell>{condition[3]}</Cell>
-                <Cell>{condition[4]}</Cell>
+                <Cell>{web3.toUtf8(condition[0])}</Cell>
+                <Cell>{web3.toUtf8(condition[1])}</Cell>
+                <Cell>{web3.toUtf8(condition[2])}</Cell>
+                <Cell>{web3.toUtf8(condition[3])}</Cell>
+                <Cell>{web3.toUtf8(condition[4])}</Cell>
                 <Cell>{condition[5]}</Cell>
+                {condition[6] ? (
+                    <Cell style={{ color: "green" }}>True</Cell>
+                ) : (
+                    <Cell style={{ color: "red" }}>False</Cell>
+                )}
             </Row>
         );
     }

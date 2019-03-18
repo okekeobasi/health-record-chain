@@ -39,6 +39,7 @@ class ConditionsIndex extends Component {
                             from: account
                         });
                     })
+                    .reverse()
             );
 
             console.log(conditionsLength, conditions);
@@ -98,15 +99,21 @@ class ConditionsIndex extends Component {
 
                             <Grid.Row>
                                 <Grid.Column>
-                                    <a>
-                                        <Button
-                                            primary
-                                            floated="right"
-                                            style={{ marginBottom: 10 }}
-                                        >
-                                            Add
-                                        </Button>
-                                    </a>
+                                    <Link
+                                        route={`/records/${
+                                            this.props.address
+                                        }/conditions/new`}
+                                    >
+                                        <a>
+                                            <Button
+                                                primary
+                                                floated="right"
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                Add
+                                            </Button>
+                                        </a>
+                                    </Link>
                                     <Table collapsing={true} size={"small"}>
                                         <Header>
                                             <Row>
@@ -124,6 +131,9 @@ class ConditionsIndex extends Component {
                                                 </HeaderCell>
                                                 <HeaderCell>
                                                     Provider
+                                                </HeaderCell>
+                                                <HeaderCell>
+                                                    Verified
                                                 </HeaderCell>
                                             </Row>
                                         </Header>

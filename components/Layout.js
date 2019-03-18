@@ -11,6 +11,7 @@ export default props => {
                     rel="stylesheet"
                     href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.1/dist/semantic.min.css"
                 />
+                <title>HealthChain</title>
             </Head>
 
             <Header />

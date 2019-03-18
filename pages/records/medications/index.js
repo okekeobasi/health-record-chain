@@ -39,6 +39,7 @@ class MedicationsIndex extends Component {
                             from: account
                         });
                     })
+                    .reverse()
             );
 
             console.log(medicationsLength, medications);
@@ -98,15 +99,21 @@ class MedicationsIndex extends Component {
 
                             <Grid.Row>
                                 <Grid.Column>
-                                    <a>
-                                        <Button
-                                            primary
-                                            floated="right"
-                                            style={{ marginBottom: 10 }}
-                                        >
-                                            Add
-                                        </Button>
-                                    </a>
+                                    <Link
+                                        route={`/records/${
+                                            this.props.address
+                                        }/medications/new`}
+                                    >
+                                        <a>
+                                            <Button
+                                                primary
+                                                floated="right"
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                Add
+                                            </Button>
+                                        </a>
+                                    </Link>
                                     <Table collapsing={true} size={"small"}>
                                         <Header>
                                             <Row>
@@ -115,16 +122,18 @@ class MedicationsIndex extends Component {
                                                 <HeaderCell>
                                                     Strength
                                                 </HeaderCell>
-                                                <HeaderCell>Dosage</HeaderCell>
-                                                <HeaderCell>
-                                                    Frequency
-                                                </HeaderCell>
                                                 <HeaderCell>Reason</HeaderCell>
                                                 <HeaderCell>
                                                     Start Date
                                                 </HeaderCell>
                                                 <HeaderCell>
+                                                    End Date
+                                                </HeaderCell>
+                                                <HeaderCell>
                                                     Provider
+                                                </HeaderCell>
+                                                <HeaderCell>
+                                                    Verified
                                                 </HeaderCell>
                                             </Row>
                                         </Header>

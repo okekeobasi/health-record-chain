@@ -39,6 +39,7 @@ class AppointmentIndex extends Component {
                             from: account
                         });
                     })
+                    .reverse()
             );
 
             console.log(appointmentsLength, appointments);
@@ -117,7 +118,7 @@ class AppointmentIndex extends Component {
                                             </Button>
                                         </a>
                                     </Link>
-                                    <Table>
+                                    <Table size="small">
                                         <Header>
                                             <Row>
                                                 <HeaderCell>ID</HeaderCell>
@@ -126,6 +127,9 @@ class AppointmentIndex extends Component {
                                                 </HeaderCell>
                                                 <HeaderCell>Date</HeaderCell>
                                                 <HeaderCell>Purpose</HeaderCell>
+                                                <HeaderCell>
+                                                    Verified
+                                                </HeaderCell>
                                             </Row>
                                         </Header>
                                         <Body>{this.renderRows()}</Body>

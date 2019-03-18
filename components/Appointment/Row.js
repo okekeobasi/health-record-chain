@@ -9,8 +9,13 @@ export default class AppointmentRow extends Component {
             <Row>
                 <Cell>{id}</Cell>
                 <Cell>{appointment[0]}</Cell>
-                <Cell>{appointment[1]}</Cell>
-                <Cell>{appointment[2]}</Cell>
+                <Cell>{web3.toUtf8(appointment[1])}</Cell>
+                <Cell>{web3.toUtf8(appointment[2])}</Cell>
+                {appointment[3] ? (
+                    <Cell style={{ color: "green" }}>True</Cell>
+                ) : (
+                    <Cell style={{ color: "red" }}>False</Cell>
+                )}
             </Row>
         );
     }

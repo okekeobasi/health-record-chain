@@ -10,12 +10,17 @@ class MedicationRow extends Component {
         return (
             <Row>
                 <Cell>{id}</Cell>
-                <Cell>{medication[0]}</Cell>
-                <Cell>{medication[1]}</Cell>
-                <Cell>{medication[2]}</Cell>
-                <Cell>{medication[3]}</Cell>
-                <Cell>{medication[4]}</Cell>
+                <Cell>{web3.toUtf8(medication[0])}</Cell>
+                <Cell>{web3.toUtf8(medication[1])}</Cell>
+                <Cell>{web3.toUtf8(medication[2])}</Cell>
+                <Cell>{web3.toUtf8(medication[3])}</Cell>
+                <Cell>{web3.toUtf8(medication[4])}</Cell>
                 <Cell>{medication[5]}</Cell>
+                {medication[6] ? (
+                    <Cell style={{ color: "green" }}>True</Cell>
+                ) : (
+                    <Cell style={{ color: "red" }}>False</Cell>
+                )}
             </Row>
         );
     }
