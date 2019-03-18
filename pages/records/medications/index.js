@@ -2,7 +2,14 @@ import React, { Component } from "react";
 import Layout from "../../../components/Layout";
 import { Link } from "../../../routes";
 import Record from "../../../ethereum/health-record";
-import { Table, Button, Grid, Message } from "semantic-ui-react";
+import {
+    Table,
+    Button,
+    Grid,
+    Message,
+    Responsive,
+    Segment
+} from "semantic-ui-react";
 import RecordMenu from "../../../components/RecordMenu";
 import MedicationRow from "../../../components/Medication/Row";
 
@@ -79,9 +86,13 @@ class MedicationsIndex extends Component {
                     </Grid.Row>
 
                     <Grid.Row>
-                        <Grid.Column width={5}>
-                            <RecordMenu address={this.props.address} />
-                        </Grid.Column>
+                        <Segment.Group>
+                            <Responsive as={Segment}>
+                                <Grid.Column width={5}>
+                                    <RecordMenu address={this.props.address} />
+                                </Grid.Column>
+                            </Responsive>
+                        </Segment.Group>
 
                         <Grid.Column width={11}>
                             <Grid.Row>
