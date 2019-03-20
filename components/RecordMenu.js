@@ -29,6 +29,15 @@ class RecordMenu extends Component {
                 </Menu.Item>
 
                 <Menu.Item
+                    name="personal"
+                    active={activeItem === "personal"}
+                    onClick={this.handleItemClick}
+                >
+                    <Icon name="address card" />
+                    Personal
+                </Menu.Item>
+
+                <Menu.Item
                     name="appointments"
                     active={activeItem === "appointments"}
                     onClick={this.handleItemClick}

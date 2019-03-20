@@ -93,7 +93,10 @@ class AppointmentIndex extends Component {
                         <Segment.Group>
                             <Responsive as={Segment}>
                                 <Grid.Column width={5}>
-                                    <RecordMenu address={this.props.address} />
+                                    <RecordMenu
+                                        address={this.props.address}
+                                        error={!!this.state.errorMessage}
+                                    />
                                 </Grid.Column>
                             </Responsive>
                         </Segment.Group>
