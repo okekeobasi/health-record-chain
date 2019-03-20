@@ -4,6 +4,7 @@ contract HealthRecordFactory{
     address[] public deployedHealthRecords;
     mapping(address => bool) hasDeployedRecord;
     
+    
     struct Provider{
         bytes32 name;
         bytes32 location;
@@ -28,7 +29,9 @@ contract HealthRecordFactory{
         return deployedHealthRecords;
     }
     
-    function HealthProvider(bytes32 name, bytes32 location) public {
+    function HealthProvider(bytes32 name, bytes32 location) public payable{
+        require(msg.value >= 1 ether);
+        
         Provider memory newProvider = Provider({
             name: name,
             location: location,
