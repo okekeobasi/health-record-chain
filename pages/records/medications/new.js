@@ -1,10 +1,19 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import web3 from "../../../ethereum/web3";
 import factory from "../../../ethereum/factory";
 import Record from "../../../ethereum/health-record";
 import { Router } from "../../../routes";
 import Layout from "../../../components/Layout";
-import { Form, Input, Message, Select, Button, Icon } from "semantic-ui-react";
+import {
+    Form,
+    Input,
+    Message,
+    Select,
+    Button,
+    Icon,
+    Search
+} from "semantic-ui-react";
 import { DateTimeInput, DateInput } from "semantic-ui-calendar-react";
 
 class MedicationNew extends Component {
@@ -29,7 +38,9 @@ class MedicationNew extends Component {
                 return {
                     text: provider.provider,
                     key: index,
-                    value: provider.provider
+                    value: provider.provider,
+                    title: provider.provider,
+                    description: web3.utils.toUtf8(provider.name)
                 };
             });
         } catch (err) {
@@ -51,7 +62,36 @@ class MedicationNew extends Component {
         strength_ext: "",
         dosage_ext: "",
         errorMessage: "",
-        loading: false
+        loading: false,
+        isLoading: false,
+        value: "",
+        results: []
+    };
+
+    componentWillMount() {
+        this.resetComponent();
+    }
+
+    resetComponent = () =>
+        this.setState({ isLoading: false, value: "", results: [] });
+
+    handleResultSelect = (e, { result }) =>
+        this.setState({ value: result.title, provider: result.title });
+
+    handleSearchChange = (e, { value }) => {
+        this.setState({ isLoading: true, value });
+
+        setTimeout(() => {
+            if (this.state.value.length < 1) return this.resetComponent();
+
+            const re = new RegExp(_.escapeRegExp(this.state.value), "i");
+            const isMatch = result => re.test(result.value);
+
+            this.setState({
+                isLoading: false,
+                results: _.filter(this.props.provider_options, isMatch)
+            });
+        }, 300);
     };
 
     handleChange = (event, { name, value }) => {
@@ -82,7 +122,7 @@ class MedicationNew extends Component {
         this.setState({ loading: true, errorMessage: "" });
 
         try {
-            const accounts = await web3.eth.getAccounts();
+            const [account] = await web3.eth.getAccounts();
             dosage = dosage + " " + dosage_ext;
             strength = strength + " " + strength_ext;
 
@@ -98,8 +138,11 @@ class MedicationNew extends Component {
                     provider
                 )
                 .send({
-                    from: accounts[0]
+                    from: account
                 });
+
+            await record.methods.setProviders(provider).send({ from: account });
+
             Router.pushRoute(`/records/${this.props.address}/medications`);
         } catch (err) {
             console.log(err);
@@ -175,6 +218,7 @@ class MedicationNew extends Component {
 
     render() {
         const { provider_options } = this.props;
+        const { isLoading, value, results } = this.state;
         // console.log(provider_options);
         let today = new Date();
 
@@ -276,17 +320,31 @@ class MedicationNew extends Component {
                     </Form.Field>
 
                     <Form.Field>
-                        <label>Provider</label>
-                        <Select
+                        {/* <Select
                             name="provider"
                             options={provider_options}
                             onChange={this.handleChange}
+                        /> */}
+                        <label>Provider</label>
+                        <Search
+                            loading={isLoading}
+                            onResultSelect={this.handleResultSelect}
+                            onSearchChange={_.debounce(
+                                this.handleSearchChange,
+                                500,
+                                { leading: true }
+                            )}
+                            results={results}
+                            value={value}
+                            {...this.props}
+                            name="provider"
+                            fluid
                         />
                     </Form.Field>
 
                     <Message
                         error
-                        header="Oops!"
+                        header="!!"
                         content={this.state.errorMessage}
                     />
 

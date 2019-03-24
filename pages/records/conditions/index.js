@@ -90,6 +90,7 @@ class ConditionsIndex extends Component {
                             <Responsive as={Segment}>
                                 <Grid.Column>
                                     <RecordMenu
+                                        providerActive={false}
                                         address={this.props.address}
                                         error={!!this.state.errorMessage}
                                     />

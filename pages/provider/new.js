@@ -26,7 +26,8 @@ class RecordNew extends Component {
                     web3.utils.fromAscii(this.state.location)
                 )
                 .send({
-                    from: accounts[0]
+                    from: accounts[0],
+                    value: web3.utils.toWei(".25", "ether")
                 });
 
             Router.pushRoute("/");
@@ -67,6 +68,8 @@ class RecordNew extends Component {
                             }}
                         />
                     </Form.Field>
+
+                    <pre style={{ color: "red" }}>Cost .25 ether</pre>
 
                     <Message
                         error

@@ -98,13 +98,13 @@ class AppointmentNew extends Component {
         event.preventDefault();
 
         const { provider, dateTime, purpose } = this.state;
-        const record = Record(this.props.address);
         console.log(this.state);
 
         this.setState({ loading: true, errorMessage: "" });
 
         try {
-            const accounts = await web3.eth.getAccounts();
+            const [account] = await web3.eth.getAccounts();
+            const record = Record(this.props.address);
 
             await record.methods
                 .createAppointment(
@@ -113,8 +113,11 @@ class AppointmentNew extends Component {
                     web3.utils.fromAscii(purpose)
                 )
                 .send({
-                    from: accounts[0]
+                    from: account
                 });
+
+            await record.methods.setProviders(provider).send({ from: account });
+
             Router.pushRoute(`/records/${this.props.address}/appointments`);
         } catch (err) {
             console.log(err);
@@ -185,7 +188,7 @@ class AppointmentNew extends Component {
 
                     <Message
                         error
-                        header="Oops!"
+                        header="!!"
                         content={this.state.errorMessage}
                     />
 

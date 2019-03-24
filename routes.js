@@ -18,6 +18,14 @@ routes
     .add(
         "/provider/records/:address/appointments",
         "/provider/records/appointments"
+    )
+    .add(
+        "/provider/records/:address/conditions",
+        "/provider/records/conditions"
+    )
+    .add(
+        "/provider/records/:address/medications",
+        "/provider/records/medications"
     );
 
 module.exports = routes;

@@ -113,7 +113,7 @@ class ConditionNew extends Component {
         this.setState({ loading: true, errorMessage: "" });
 
         try {
-            const accounts = await web3.eth.getAccounts();
+            const [account] = await web3.eth.getAccounts();
 
             await record.methods
                 .createCondition(
@@ -125,8 +125,11 @@ class ConditionNew extends Component {
                     provider
                 )
                 .send({
-                    from: accounts[0]
+                    from: account
                 });
+
+            await record.methods.setProviders(provider).send({ from: account });
+
             Router.pushRoute(`/records/${this.props.address}/conditions`);
         } catch (err) {
             console.log(err);
@@ -239,7 +242,7 @@ class ConditionNew extends Component {
 
                     <Message
                         error
-                        header="Oops!"
+                        header="!!"
                         content={this.state.errorMessage}
                     />
 
