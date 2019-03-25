@@ -151,7 +151,7 @@ class ConditionIndex extends Component {
 
         return conditions.map((condition, key) => {
             console.log("data----  ", condition);
-            return condition[5] == this.state.account ? (
+            return (
                 <Row>
                     <Cell>{key}</Cell>
                     <Cell>{web3.utils.toUtf8(condition[0])}</Cell>
@@ -174,19 +174,31 @@ class ConditionIndex extends Component {
                         </Cell>
                     ) : (
                         <Cell>
-                            <Button
-                                color="green"
-                                basic
-                                onClick={this.onApprove}
-                                loading={this.state.loading}
-                                value={key}
-                            >
-                                Approve
-                            </Button>
+                            {condition[5] == this.state.account ? (
+                                <Button
+                                    color="green"
+                                    basic
+                                    onClick={this.onApprove}
+                                    loading={this.state.loading}
+                                    value={key}
+                                >
+                                    Approve
+                                </Button>
+                            ) : (
+                                <Button
+                                    basic
+                                    onClick={this.onApprove}
+                                    value={key}
+                                    loading={this.state.loading}
+                                    disabled
+                                >
+                                    Approve
+                                </Button>
+                            )}
                         </Cell>
                     )}
                 </Row>
-            ) : null;
+            );
         });
     }
 
